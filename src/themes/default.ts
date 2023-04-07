@@ -1,9 +1,83 @@
-import { createTheme } from "@material-ui/core/styles";
+import { ThemeOptions, createTheme } from "@material-ui/core/styles";
 import FUGA_COLORS from "./colors";
 
-import type { FugaThemeOptions } from "./types";
+declare module "@material-ui/core/styles/createPalette" {
+  interface Palette {
+    tabs: {
+      default: {
+        backgroundColor: string;
+        contrastText: string;
+        indicator: string;
+      };
+      primary: {
+        backgroundColor: string;
+        contrastText: string;
+        indicator: string;
+      };
+      secondary: {
+        backgroundColor: string;
+        contrastText: string;
+        indicator: string;
+      };
+    };
+    navBar: {
+      primary: {
+        navBarIcon: string;
+        navBarUserMenuLabel: string;
+        backgroundColor: string;
+      };
+      secondary: {
+        navBarIcon: string;
+        navBarUserMenuLabel: string;
+        backgroundColor: string;
+      };
+      default: {
+        navBarIcon: string;
+        navBarUserMenuLabel: string;
+        backgroundColor: string;
+      };
+    };
+  }
+  // allow configuration using `createMuiTheme`
+  interface PaletteOptions {
+    tabs: {
+      default: {
+        backgroundColor: string;
+        contrastText: string;
+        indicator: string;
+      };
+      primary: {
+        backgroundColor: string;
+        contrastText: string;
+        indicator: string;
+      };
+      secondary: {
+        backgroundColor: string;
+        contrastText: string;
+        indicator: string;
+      };
+    };
+    navBar: {
+      primary: {
+        navBarIcon: string;
+        navBarUserMenuLabel: string;
+        backgroundColor: string;
+      };
+      secondary: {
+        navBarIcon: string;
+        navBarUserMenuLabel: string;
+        backgroundColor: string;
+      };
+      default: {
+        navBarIcon: string;
+        navBarUserMenuLabel: string;
+        backgroundColor: string;
+      };
+    };
+  }
+}
 
-const themeOptions: FugaThemeOptions = {
+const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: "Nunito Sans, sans-serif",
     fontSize: 14,

@@ -1,9 +1,7 @@
-import { createTheme } from "@material-ui/core/styles";
+import { ThemeOptions, createTheme } from "@material-ui/core/styles";
 import FUGA_COLORS from "./colors";
 
-import type { FugaThemeOptions } from "./types";
-
-const themeOptions: FugaThemeOptions = {
+const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: "Nunito Sans, sans-serif",
     fontSize: 14,

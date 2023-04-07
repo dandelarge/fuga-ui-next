@@ -12,7 +12,7 @@ import {
 
 interface Props {
   links: Array<{ label: string; href: string }>;
-  selectedIndex: number;
+  selectedIndex?: number;
   color?: 'primary' | 'secondary' | 'default';
   tabProps?: any;
   isMobile?: boolean;

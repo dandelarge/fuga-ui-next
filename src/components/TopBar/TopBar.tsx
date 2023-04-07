@@ -1,4 +1,3 @@
-import { CustomComponentPaletteOptions, FugaThemeOptions, NavBarPaletteOptions, TabsPaletteOptions } from '@/themes/types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { useStyles } from './styles';

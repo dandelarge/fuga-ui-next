@@ -1,24 +1,6 @@
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { Palette } from "@material-ui/core/styles/createPalette";
 
-declare module "@material-ui/core/styles/createPalette" {
-  interface Palette {
-    navBar: {
-      default: {
-        backgroundColor: string;
-      };
-    };
-  }
-  // allow configuration using `createMuiTheme`
-  interface PaletteOptions {
-    navBar: {
-      default: {
-        backgroundColor: string;
-      };
-    };
-  }
-}
-
 export const useStyles = makeStyles<
   Theme,
   { color: keyof Palette["navBar"]; separatorWidth: number }

@@ -1,46 +1,5 @@
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import { Palette } from "@material-ui/core/styles/createPalette";
-declare module "@material-ui/core/styles/createPalette" {
-  interface Palette {
-    tabs: {
-      default: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      primary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      secondary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-    };
-  }
-  // allow configuration using `createMuiTheme`
-  interface PaletteOptions {
-    tabs: {
-      default: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      primary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      secondary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-    };
-  }
-}
 
 export const useListStyle = makeStyles<Theme, { color: keyof Palette["tabs"] }>(
   (theme) => ({

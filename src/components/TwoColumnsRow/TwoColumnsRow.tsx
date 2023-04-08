@@ -9,7 +9,7 @@ interface Props {
   rightColumnClass?: string;
 }
 
-const TwoColumnsLayout = ({
+const TwoColumnsRow = ({
   leftColumn,
   rightColumn,
   flexColumn,
@@ -35,4 +35,4 @@ const TwoColumnsLayout = ({
   );
 };
 
-export default TwoColumnsLayout;
+export default TwoColumnsRow;

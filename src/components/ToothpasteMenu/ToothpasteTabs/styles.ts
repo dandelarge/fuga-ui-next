@@ -23,6 +23,11 @@ export const useTabsStyles = makeStyles<
     display: "flex" | "none";
   }
 >((theme) => ({
+  root: {
+    minHeight: ({ color }) =>
+      color === "default" ? theme.spacing(4) : "default",
+    letterSpacing: ({ color }) => (color === "default" ? "1.2px" : "default"),
+  },
   indicator: {
     display: ({ display }) => display || "default",
     backgroundColor: ({ color }) => theme.palette.tabs[color].indicator,
@@ -38,7 +43,12 @@ export const useTabStyles = makeStyles<Theme, { color: keyof Palette["tabs"] }>(
   (theme) => ({
     root: {
       color: ({ color }) => theme.palette.tabs[color].contrastText,
-
+      minHeight: ({ color }) =>
+        color === "primary" ? theme.spacing(9) : "default",
+      textTransform: ({ color }) =>
+        color === "primary" ? "capitalize" : "uppercase",
+      fontWeight: ({ color }) => (color === "primary" ? 700 : 500),
+      fontSize: ({ color }) => (color === "primary" ? "16px" : "14px"),
       "& > span": {
         color: ({ color }) => theme.palette.tabs[color].contrastText,
       },

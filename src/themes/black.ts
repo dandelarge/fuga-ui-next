@@ -1,82 +1,6 @@
 import { ThemeOptions, createTheme } from "@material-ui/core/styles";
 import FUGA_COLORS from "./colors";
 
-declare module "@material-ui/core/styles/createPalette" {
-  interface Palette {
-    tabs: {
-      default: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      primary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      secondary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-    };
-    navBar: {
-      primary: {
-        navBarIcon: string;
-        navBarUserMenuLabel: string;
-        backgroundColor: string;
-      };
-      secondary: {
-        navBarIcon: string;
-        navBarUserMenuLabel: string;
-        backgroundColor: string;
-      };
-      default: {
-        navBarIcon: string;
-        navBarUserMenuLabel: string;
-        backgroundColor: string;
-      };
-    };
-  }
-  // allow configuration using `createMuiTheme`
-  interface PaletteOptions {
-    tabs: {
-      default: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      primary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-      secondary: {
-        backgroundColor: string;
-        contrastText: string;
-        indicator: string;
-      };
-    };
-    navBar: {
-      primary: {
-        navBarIcon: string;
-        navBarUserMenuLabel: string;
-        backgroundColor: string;
-      };
-      secondary: {
-        navBarIcon: string;
-        navBarUserMenuLabel: string;
-        backgroundColor: string;
-      };
-      default: {
-        navBarIcon: string;
-        navBarUserMenuLabel: string;
-        backgroundColor: string;
-      };
-    };
-  }
-}
-
 const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: "Nunito Sans, sans-serif",
@@ -93,60 +17,42 @@ const themeOptions: ThemeOptions = {
     },
   },
   palette: {
-    background: {
-      default: "#EEEEEE",
-      paper: FUGA_COLORS.WHITE,
-    },
-    error: {
-      main: FUGA_COLORS.RED[500],
-    },
-    warning: {
-      main: FUGA_COLORS.ORANGE[600],
-    },
-    grey: FUGA_COLORS.GREY,
     primary: {
-      light: FUGA_COLORS.GREEN[200],
-      main: FUGA_COLORS.GREEN[500],
-    },
-    secondary: {
-      main: FUGA_COLORS.GREEN[300],
-    },
-    text: {
-      primary: FUGA_COLORS.GREY[900],
-      secondary: FUGA_COLORS.GREY[700],
+      light: FUGA_COLORS.GREY[100],
+      main: FUGA_COLORS.GREY[900],
     },
     tabs: {
       primary: {
-        backgroundColor: FUGA_COLORS.GREEN[500],
+        backgroundColor: FUGA_COLORS.GREY[900],
         contrastText: FUGA_COLORS.WHITE,
         indicator: FUGA_COLORS.WHITE,
       },
       secondary: {
-        backgroundColor: FUGA_COLORS.GREEN[500],
+        backgroundColor: FUGA_COLORS.GREY[900],
         contrastText: FUGA_COLORS.WHITE,
         indicator: FUGA_COLORS.WHITE,
       },
       default: {
         backgroundColor: FUGA_COLORS.WHITE,
         contrastText: FUGA_COLORS.GREY[900],
-        indicator: FUGA_COLORS.GREEN[500],
+        indicator: FUGA_COLORS.GREY[900],
       },
     },
     navBar: {
       primary: {
         navBarIcon: FUGA_COLORS.WHITE,
         navBarUserMenuLabel: FUGA_COLORS.WHITE,
-        backgroundColor: FUGA_COLORS.GREEN[500],
+        backgroundColor: FUGA_COLORS.GREY[900],
       },
       secondary: {
         navBarIcon: FUGA_COLORS.WHITE,
         navBarUserMenuLabel: FUGA_COLORS.WHITE,
-        backgroundColor: FUGA_COLORS.GREEN[500],
+        backgroundColor: FUGA_COLORS.GREY[900],
       },
       default: {
         navBarIcon: FUGA_COLORS.WHITE,
         navBarUserMenuLabel: FUGA_COLORS.WHITE,
-        backgroundColor: FUGA_COLORS.GREEN[500],
+        backgroundColor: FUGA_COLORS.GREY[900],
       },
     },
   },
@@ -234,7 +140,7 @@ const themeOptions: ThemeOptions = {
       },
       colorSecondary: {
         "&$checked": {
-          color: FUGA_COLORS.GREEN[500],
+          color: FUGA_COLORS.BLUE[500],
         },
         "&$disabled": {
           color: FUGA_COLORS.GREY[400],
@@ -277,11 +183,11 @@ const themeOptions: ThemeOptions = {
         marginTop: "2px",
       },
       colorPrimary: {
-        backgroundColor: FUGA_COLORS.GREEN[200],
+        backgroundColor: FUGA_COLORS.GREY[800],
       },
       outlined: {
-        borderColor: FUGA_COLORS.GREY[700],
-        color: FUGA_COLORS.GREY[900],
+        borderColor: FUGA_COLORS.GREY[900],
+        color: FUGA_COLORS.GREY[300],
         "&$clickable": {
           "&:hover": {
             backgroundColor: "rgba(0,0,0, 0.07)",
@@ -292,9 +198,9 @@ const themeOptions: ThemeOptions = {
         },
       },
       outlinedPrimary: {
-        borderColor: FUGA_COLORS.GREEN[300],
-        backgroundColor: FUGA_COLORS.GREEN[500],
-        color: FUGA_COLORS.GREEN[900],
+        borderColor: FUGA_COLORS.GREY[900],
+        backgroundColor: FUGA_COLORS.WHITE,
+        color: FUGA_COLORS.BLUE[900],
       },
       deleteIcon: {
         color: FUGA_COLORS.GREY[900],
@@ -348,7 +254,7 @@ const themeOptions: ThemeOptions = {
     MuiTableRow: {
       root: {
         "&:nth-of-type(even)": {
-          backgroundColor: FUGA_COLORS.GREEN[300],
+          backgroundColor: FUGA_COLORS.BLUE[300],
         },
       },
     },

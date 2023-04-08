@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../themes/default';
+import { NextPage } from 'next';
 
 interface MyAppProps {
   Component: React.ComponentType;
   pageProps: any;
 }
 
-export default function MyApp(props: MyAppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = MyAppProps & {
+  Component: NextPageWithLayout
+}
+
+export default function MyApp(props: AppPropsWithLayout) {
   const { Component, pageProps } = props;
 
   React.useEffect(() => {
@@ -21,6 +30,8 @@ export default function MyApp(props: MyAppProps) {
     }
   }, []);
 
+  const getLayout = Component.getLayout ?? ((page) => page)
+
   return (
     <React.Fragment>
       <Head>
@@ -30,7 +41,7 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
       </ThemeProvider>
     </React.Fragment>
   );

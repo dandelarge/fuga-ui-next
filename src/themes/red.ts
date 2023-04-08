@@ -30,7 +30,7 @@ const themeOptions: ThemeOptions = {
     grey: FUGA_COLORS.GREY,
     primary: {
       light: FUGA_COLORS.RED[200],
-      main: FUGA_COLORS.RED[300],
+      main: FUGA_COLORS.RED[500],
     },
     secondary: {
       main: FUGA_COLORS.RED[300],
@@ -41,36 +41,36 @@ const themeOptions: ThemeOptions = {
     },
     tabs: {
       primary: {
-        backgroundColor: FUGA_COLORS.RED[300],
+        backgroundColor: FUGA_COLORS.RED[400],
         contrastText: FUGA_COLORS.WHITE,
         indicator: FUGA_COLORS.WHITE,
       },
       secondary: {
-        backgroundColor: FUGA_COLORS.RED[300],
+        backgroundColor: FUGA_COLORS.RED[400],
         contrastText: FUGA_COLORS.WHITE,
         indicator: FUGA_COLORS.WHITE,
       },
       default: {
         backgroundColor: FUGA_COLORS.WHITE,
         contrastText: FUGA_COLORS.GREY[900],
-        indicator: FUGA_COLORS.RED[300],
+        indicator: FUGA_COLORS.RED[400],
       },
     },
     navBar: {
       primary: {
         navBarIcon: FUGA_COLORS.WHITE,
         navBarUserMenuLabel: FUGA_COLORS.WHITE,
-        backgroundColor: FUGA_COLORS.RED[300],
+        backgroundColor: FUGA_COLORS.RED[400],
       },
       secondary: {
         navBarIcon: FUGA_COLORS.WHITE,
         navBarUserMenuLabel: FUGA_COLORS.WHITE,
-        backgroundColor: FUGA_COLORS.RED[300],
+        backgroundColor: FUGA_COLORS.RED[400],
       },
       default: {
         navBarIcon: FUGA_COLORS.WHITE,
         navBarUserMenuLabel: FUGA_COLORS.WHITE,
-        backgroundColor: FUGA_COLORS.RED[300],
+        backgroundColor: FUGA_COLORS.RED[400],
       },
     },
   },

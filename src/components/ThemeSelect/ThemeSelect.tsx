@@ -26,7 +26,7 @@ export default function ThemeSelect({ onChange }: Props) {
           }
 
         }} >
-        <option value={""}> Select a theme</option>
+        <option value={""} disabled> Select a theme</option>
         {
           themes.size > 0 ?
             Array.from(themes.keys()).map(name =>

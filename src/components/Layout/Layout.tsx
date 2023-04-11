@@ -7,12 +7,9 @@ import themes from '@/themes';
 import ThemeSelect from '@/components/ThemeSelect/ThemeSelect';
 import Title from '@/components/Title/Title';
 import ToothPasteTabs from '@/components/ToothpasteMenu/ToothpasteTabs/ToothpasteTabs';
-import { Box, CssBaseline, IconButton, Theme, Typography, createTheme, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, CssBaseline, IconButton, Theme, createTheme, } from '@material-ui/core';
 import { WindowSizeContextProvider } from '@/providers/WindowSizeProvider';
-import TwoColumnsRow from '../TwoColumnsRow/TwoColumnsRow';
-import ToothpasteButtons from '../ToothpasteMenu/ToothpastButtons/ToothpasteButtons';
-import { ToothPasteButton } from '../ToothpasteMenu/ToothpastButtons/ToothpasteButton/toothpasteButton';
-import { Add, ArrowDropDown, Brightness6, TagFaces, ViewModule } from '@material-ui/icons';
+import { Brightness6, } from '@material-ui/icons';
 import { PaletteOptions } from '@material-ui/core/styles/createPalette';
 import FUGA_COLORS from '@/themes/colors';
 
@@ -41,33 +38,6 @@ const topMenuLinks = [
     href: '/catalog'
   },
 ];
-
-const tabsMenuLinks = [
-  {
-    label: 'Products',
-    href: '/catalog'
-  },
-  {
-    label: 'Assets',
-    href: '/catalog/assets'
-  },
-  {
-    label: 'Artists',
-    href: '/catalog/artists'
-  },
-  {
-    label: 'Labels',
-    href: '/catalog/labels'
-  },
-  {
-    label: 'Publishers',
-    href: '/catalog/publishers'
-  },
-  {
-    label: 'People',
-    href: '/catalog/people'
-  },];
-
 interface LayoutProps {
   children: React.ReactNode;
   title?: string;

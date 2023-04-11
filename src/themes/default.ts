@@ -77,7 +77,7 @@ declare module "@material-ui/core/styles/createPalette" {
   }
 }
 
-const themeOptions: ThemeOptions = {
+export const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: "Nunito Sans, sans-serif",
     fontSize: 14,

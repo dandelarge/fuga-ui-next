@@ -1,0 +1,86 @@
+---
+title: Top Bar
+slug: top-bar
+description: Top Bar
+tags:
+  [
+    "top bar",
+    "topbar",
+    "top bar component",
+    "topbar component",
+    "top bar styles",
+    "topbar styles",
+    "top bar style",
+    "navigation",
+    "layout",
+  ]
+---
+
+### Component
+
+```tsx
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import { useStyles } from "./styles";
+import { Palette } from "@material-ui/core/styles/createPalette";
+
+interface Props {
+  leftSideContent?: React.ReactNode;
+  rightSideContent?: React.ReactNode;
+  children?: React.ReactNode;
+  color?: keyof Palette["navBar"];
+  separatorWidth?: number;
+}
+
+export default function TopBar({
+  leftSideContent,
+  rightSideContent,
+  children,
+  color = "default",
+  separatorWidth = 2,
+}: Props) {
+  const classes = useStyles({ color, separatorWidth });
+
+  return (
+    <AppBar position="static" className={classes.customAppBar}>
+      <Toolbar className={classes.customToolBar}>
+        <div className={classes.leftSideContent}>{leftSideContent}</div>
+        <div className={classes.navLinksContainer}>{children}</div>
+        <div className={classes.rightSideContent}>{rightSideContent}</div>
+      </Toolbar>
+    </AppBar>
+  );
+}
+```
+
+### Styles
+
+```tsx
+import { Theme, makeStyles } from "@material-ui/core/styles";
+import { Palette } from "@material-ui/core/styles/createPalette";
+
+export const useStyles = makeStyles<
+  Theme,
+  { color: keyof Palette["navBar"]; separatorWidth: number }
+>((theme) => ({
+  customToolBar: {
+    minHeight: theme.spacing(9),
+  },
+  customAppBar: {
+    backgroundColor: ({ color }) => theme.palette.navBar[color].backgroundColor,
+  },
+  leftSideContent: {
+    flexShrink: 0,
+    display: "flex",
+  },
+  rightSideContent: {
+    flexShrink: 0,
+    display: "flex",
+  },
+  navLinksContainer: {
+    flexGrow: 1,
+    marginRight: ({ separatorWidth }) => theme.spacing(separatorWidth),
+    marginLeft: ({ separatorWidth }) => theme.spacing(separatorWidth),
+  },
+}));
+```

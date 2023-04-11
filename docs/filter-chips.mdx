@@ -1,0 +1,272 @@
+---
+title: filter chips
+slug: filter-chips
+description: Toothpaste Buttons
+tags: ["toothpaste", "buttons", "button", "button group"]
+---
+
+#### Component
+
+```tsx
+import React, {
+  useLayoutEffect,
+  useRef,
+  useState,
+  ComponentProps,
+} from "react";
+import { useWindowSizeContext } from "@/providers/WindowSizeProvider";
+import {
+  moveHiddenItemsToVisibleItems,
+  moveVisibleItemsToHiddenItems,
+} from "../helpers";
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import MoreVert from "@material-ui/icons/MoreVert";
+import { useStyles } from "./styles";
+
+export default function ToothpasteButtons({ children }: ComponentProps<any>) {
+  const outerContainerRef = useRef<HTMLDivElement>(null);
+  const innerContainerRef = useRef<HTMLDivElement>(null);
+  const itemWidths = useRef<Map<any, any> | null>(null);
+
+  const [visibleItems, setVisibleItems] = useState<Array<any>>(
+    React.Children.toArray(children)
+  );
+  const [hiddenItems, setHiddenItems] = useState<Array<any>>([]);
+
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
+
+  const { windowWidth } = useWindowSizeContext();
+
+  const classes = useStyles();
+
+  function canSetWidths() {
+    return (
+      outerContainerRef &&
+      outerContainerRef.current &&
+      innerContainerRef &&
+      innerContainerRef.current
+    );
+  }
+
+  function getCurrentWidths() {
+    if (!canSetWidths()) {
+      return {
+        outerWidth: 0,
+        innerWidth: 0,
+      };
+    }
+
+    return {
+      outerWidth: (
+        outerContainerRef.current as HTMLElement
+      ).getBoundingClientRect().width,
+      innerWidth: (
+        innerContainerRef.current as unknown as HTMLElement
+      ).getBoundingClientRect().width,
+    };
+  }
+
+  function getItemsMap() {
+    if (!itemWidths.current) {
+      itemWidths.current = new Map();
+    }
+    return itemWidths.current;
+  }
+
+  function countItemsToRemove() {
+    const { outerWidth, innerWidth } = getCurrentWidths();
+    const widthsMap = getItemsMap();
+    const widthsArray = Array.from(widthsMap.values()).map(
+      (item) => item.width
+    );
+    const visibleItemsWidths = widthsArray.slice(0, visibleItems.length);
+    let toRemove = 1;
+
+    while (toRemove <= visibleItems.length) {
+      const visibleItemsWidthsToCheck = visibleItemsWidths.slice(
+        0,
+        visibleItemsWidths.length - toRemove + 1
+      );
+
+      const lastItemWidth = visibleItemsWidthsToCheck.pop();
+
+      if (outerWidth >= innerWidth - lastItemWidth) {
+        break;
+      }
+
+      toRemove++;
+    }
+
+    return toRemove;
+  }
+
+  function countItemsToAdd() {
+    const { outerWidth, innerWidth } = getCurrentWidths();
+    const widthsMap = getItemsMap();
+    const widthsArray = Array.from(widthsMap.values()).map(
+      (item) => item.width
+    );
+    let toAdd = 1;
+
+    while (toAdd <= hiddenItems.length) {
+      const hiddenItemsWidthsToCheck = widthsArray.slice(
+        visibleItems.length,
+        visibleItems.length + toAdd
+      );
+
+      const hiddenItemsWidthsSum = hiddenItemsWidthsToCheck.reduce(
+        (acc, width) => acc + width,
+        0
+      );
+
+      if (outerWidth < innerWidth + hiddenItemsWidthsSum + 32) {
+        break;
+      }
+
+      toAdd++;
+    }
+
+    return toAdd;
+  }
+
+  useLayoutEffect(() => {
+    updateItems();
+  }, []);
+
+  function updateItems() {
+    const { outerWidth, innerWidth } = getCurrentWidths();
+
+    if (outerWidth === 0 || innerWidth === 0) {
+      return;
+    }
+
+    if (innerWidth >= outerWidth && visibleItems.length > 0) {
+      const deleteCount = countItemsToRemove();
+      const updatedLists = moveVisibleItemsToHiddenItems(
+        visibleItems,
+        hiddenItems,
+        deleteCount
+      );
+
+      setVisibleItems(updatedLists.visibleItems);
+      setHiddenItems(updatedLists.hiddenItems);
+    } else if (innerWidth + 172 < outerWidth && hiddenItems.length > 0) {
+      const addCount = countItemsToAdd();
+      const updatedLists = moveHiddenItemsToVisibleItems(
+        visibleItems,
+        hiddenItems,
+        addCount
+      );
+
+      setVisibleItems(updatedLists.visibleItems);
+      setHiddenItems(updatedLists.hiddenItems);
+    }
+  }
+
+  useLayoutEffect(() => {
+    if (!windowWidth) {
+      return;
+    }
+
+    updateItems();
+  }, [windowWidth]);
+
+  return (
+    <div ref={outerContainerRef} className={classes.outerContainer}>
+      <div ref={innerContainerRef} className={classes.innerContainer}>
+        {visibleItems.map((item, index) => {
+          return (
+            <div
+              className={classes.menuItem}
+              key={`button-${index}`}
+              ref={(node) => {
+                const widthsMap = getItemsMap();
+                if (node) {
+                  if (widthsMap.has(index)) {
+                    const current = widthsMap.get(index);
+                    widthsMap.set(index, {
+                      width: node.getBoundingClientRect().width,
+                      ...current,
+                    });
+                  } else {
+                    widthsMap.set(index, {
+                      width: node.getBoundingClientRect().width,
+                    });
+                  }
+                }
+              }}
+            >
+              {item}
+            </div>
+          );
+        })}
+        {hiddenItems.length > 0 ? (
+          <IconButton onClick={(e) => setMenuAnchorEl(e.currentTarget)}>
+            <MoreVert />
+          </IconButton>
+        ) : null}
+      </div>
+      <Menu
+        anchorEl={menuAnchorEl}
+        open={Boolean(menuAnchorEl)}
+        onClose={() => setMenuAnchorEl(null)}
+      >
+        {hiddenItems.map((item, index) => {
+          if (
+            item.props.component &&
+            typeof item.props.component === "function"
+          ) {
+            const Component = item.props.component;
+            return (
+              <Component key={`menuItem-${index}`}>
+                <MenuItem>{item.props.menuLabel}</MenuItem>
+              </Component>
+            );
+          }
+
+          return (
+            <MenuItem key={`menuItem-${index}`}>
+              {item.props.menuLabel}
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </div>
+  );
+}
+```
+
+#### Styles
+
+```tsx
+import { makeStyles } from "@material-ui/core/styles";
+
+export const useStyles = makeStyles((theme) => ({
+  outerContainer: {
+    display: "flex",
+    width: "100%",
+    overflow: "hidden",
+    justifyContent: "flex-end",
+  },
+  innerContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
+  menuItem: {
+    padding: theme.spacing(1),
+    "&:first-child": {
+      paddingLeft: 0,
+    },
+    "&:last-child": {
+      paddingRight: 0,
+    },
+  },
+  unstyledButton: {
+    padding: 0,
+    border: "none",
+    background: "none",
+    cursor: "auto",
+    outline: "none",
+  },
+}));
+```

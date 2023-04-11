@@ -1,19 +1,29 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
-import MenuLinks from './MenuLinks/MenuLinks';
-import Link from 'next/link';
-import { Tabs, Tab } from '@material-ui/core';
-import { useWindowSizeContext } from '@/providers/WindowSizeProvider';
-import { useTabsStyles, useTabStyles, useListStyle } from './styles';
+---
+title: Toothpaste Tabs
+slug: toothpaste-tabs-menu
+description: Toothpaste Tabs
+tags: ["toothpaste", "tabs", "toothpaste-tabs"]
+---
+
+### Component
+
+```tsx
+import React, { useState, useRef, useLayoutEffect } from "react";
+import MenuLinks from "./MenuLinks/MenuLinks";
+import Link from "next/link";
+import { Tabs, Tab } from "@material-ui/core";
+import { useWindowSizeContext } from "@/providers/WindowSizeProvider";
+import { useTabsStyles, useTabStyles, useListStyle } from "./styles";
 import {
   TAB_BASE_WIDTH,
   moveHiddenItemsToVisibleItems,
-  moveVisibleItemsToHiddenItems
-} from '../helpers';
+  moveVisibleItemsToHiddenItems,
+} from "../helpers";
 
 interface Props {
   links: Array<{ label: string; href: string }>;
   selectedIndex?: number;
-  color?: 'primary' | 'secondary' | 'default';
+  color?: "primary" | "secondary" | "default";
   tabProps?: any;
   isMobile?: boolean;
 }
@@ -21,9 +31,9 @@ interface Props {
 function ToothPasteTabs({
   links,
   selectedIndex = 0,
-  color = 'primary',
+  color = "primary",
   tabProps,
-  isMobile = false
+  isMobile = false,
 }: Props) {
   const listWrapperRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -34,7 +44,7 @@ function ToothPasteTabs({
   const [hiddenItems, setHiddenItems] = useState<Array<any>>([]);
   const [totalWidth, setTotalWidth] = useState(0);
 
-  const display = isMobile ? 'none' : 'flex';
+  const display = isMobile ? "none" : "flex";
   const tabsClasses = useTabsStyles({ display, color });
   const tabClasses = useTabStyles({ color });
   const listClasses = useListStyle({ color });
@@ -42,10 +52,7 @@ function ToothPasteTabs({
 
   function canSetWidths() {
     return (
-      listWrapperRef &&
-      listWrapperRef.current &&
-      listRef &&
-      listRef.current
+      listWrapperRef && listWrapperRef.current && listRef && listRef.current
     );
   }
 
@@ -53,13 +60,16 @@ function ToothPasteTabs({
     if (!canSetWidths()) {
       return {
         listWrapperWidth: 0,
-        listWidth: 0
+        listWidth: 0,
       };
     }
 
     return {
-      listWrapperWidth: (listWrapperRef.current as HTMLDivElement).getBoundingClientRect().width,
-      listWidth: (listRef.current as HTMLDivElement).getBoundingClientRect().width
+      listWrapperWidth: (
+        listWrapperRef.current as HTMLDivElement
+      ).getBoundingClientRect().width,
+      listWidth: (listRef.current as HTMLDivElement).getBoundingClientRect()
+        .width,
     };
   }
 
@@ -122,13 +132,13 @@ function ToothPasteTabs({
     return toAdd;
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const widthsMap = getItemWidthsMap();
     const widthsArray = Array.from(widthsMap.values());
     setTotalWidth(widthsArray.reduce((acc, width) => acc + width, 0));
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!windowWidth) {
       return;
     }
@@ -189,11 +199,11 @@ function ToothPasteTabs({
     <div className={listClasses.listWrapper} ref={listWrapperRef}>
       <div ref={listRef}>
         <Tabs classes={tabsClasses} value={selectedIndex || 0}>
-          {visibleItems.map(link => {
+          {visibleItems.map((link) => {
             console.log(link);
             return (
               <Tab
-                ref={node => {
+                ref={(node) => {
                   const widthsMap = getItemWidthsMap();
                   if (node) {
                     widthsMap.set(link.id, node.getBoundingClientRect().width);
@@ -215,7 +225,7 @@ function ToothPasteTabs({
               ref={moreTabRef}
               classes={tabClasses}
               data-test-id={`masthead--main-menu__btn--more`}
-              label='more'
+              label="more"
               links={hiddenItems}
               component={MenuLinks}
               isMobile={isMobile}
@@ -227,6 +237,74 @@ function ToothPasteTabs({
       </div>
     </div>
   );
-};
+}
 
 export default ToothPasteTabs;
+```
+
+### Styles
+
+```tsx
+import { Theme, makeStyles } from "@material-ui/core/styles";
+import { Palette } from "@material-ui/core/styles/createPalette";
+
+export const useListStyle = makeStyles<Theme, { color: keyof Palette["tabs"] }>(
+  (theme) => ({
+    listWrapper: {
+      flex: 1,
+      flexBasis: "100%",
+      display: "flex",
+      alignItems: "center",
+      backgroundColor: ({ color }) => theme.palette.tabs[color].backgroundColor,
+    },
+    listItem: {
+      flexShrink: 0,
+    },
+  })
+);
+
+export const useTabsStyles = makeStyles<
+  Theme,
+  {
+    color: "primary" | "secondary" | "default";
+    display: "flex" | "none";
+  }
+>((theme) => ({
+  root: {
+    minHeight: ({ color }) =>
+      color === "default" ? theme.spacing(4) : "default",
+    letterSpacing: ({ color }) => (color === "default" ? "1.2px" : "default"),
+  },
+  indicator: {
+    display: ({ display }) => display || "default",
+    backgroundColor: ({ color }) => theme.palette.tabs[color].indicator,
+  },
+  fixed: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+}));
+
+export const useTabStyles = makeStyles<Theme, { color: keyof Palette["tabs"] }>(
+  (theme) => ({
+    root: {
+      color: ({ color }) => theme.palette.tabs[color].contrastText,
+      minHeight: ({ color }) =>
+        color === "primary" ? theme.spacing(9) : "default",
+      textTransform: ({ color }) =>
+        color === "primary" ? "capitalize" : "uppercase",
+      fontWeight: ({ color }) => (color === "primary" ? 700 : 500),
+      fontSize: ({ color }) => (color === "primary" ? "16px" : "14px"),
+      "& > span": {
+        color: ({ color }) => theme.palette.tabs[color].contrastText,
+      },
+    },
+    selected: {
+      "& > span": {
+        color: ({ color }) => theme.palette.tabs[color].indicator,
+      },
+    },
+  })
+);
+```

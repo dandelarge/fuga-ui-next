@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TopBar from '@/components/TopBar/TopBar';
 import logo from '@/img/logo.png';
 import Image from 'next/image';
@@ -7,12 +7,14 @@ import themes from '@/themes';
 import ThemeSelect from '@/components/ThemeSelect/ThemeSelect';
 import Title from '@/components/Title/Title';
 import ToothPasteTabs from '@/components/ToothpasteMenu/ToothpasteTabs/ToothpasteTabs';
-import { Box, Theme, Typography } from '@material-ui/core';
+import { Box, CssBaseline, IconButton, Theme, Typography, createTheme, useMediaQuery, useTheme } from '@material-ui/core';
 import { WindowSizeContextProvider } from '@/providers/WindowSizeProvider';
 import TwoColumnsRow from '../TwoColumnsRow/TwoColumnsRow';
 import ToothpasteButtons from '../ToothpasteMenu/ToothpastButtons/ToothpasteButtons';
 import { ToothPasteButton } from '../ToothpasteMenu/ToothpastButtons/ToothpasteButton/toothpasteButton';
-import { Add, ArrowDropDown, TagFaces, ViewModule } from '@material-ui/icons';
+import { Add, ArrowDropDown, Brightness6, TagFaces, ViewModule } from '@material-ui/icons';
+import { PaletteOptions } from '@material-ui/core/styles/createPalette';
+import FUGA_COLORS from '@/themes/colors';
 
 const useStyles = makeStyles(theme => ({
   logo: {
@@ -31,16 +33,12 @@ const useStyles = makeStyles(theme => ({
 
 const topMenuLinks = [
   {
-    label: 'Home',
-    href: '/'
-  },
-  {
-    label: 'Catalog',
-    href: '/catalog'
-  },
-  {
     label: 'Docs',
-    href: '/docs'
+    href: '/docs/getting-started'
+  },
+  {
+    label: 'Catalog Layout',
+    href: '/catalog'
   },
 ];
 
@@ -77,11 +75,68 @@ interface LayoutProps {
   tabsMenuIndex?: number;
 }
 
+const darkMode = {
+  palette: {
+    type: 'dark',
+    primary: {
+      main: FUGA_COLORS.GREY[100],
+    },
+    background: {
+      paper: FUGA_COLORS.GREY[800],
+    },
+    navBar: {
+      primary: {
+        navBarIcon: FUGA_COLORS.WHITE,
+        navBarUserMenuLabel: FUGA_COLORS.WHITE,
+        backgroundColor: FUGA_COLORS.GREY[900]
+      },
+      secondary: {
+        navBarIcon: FUGA_COLORS.WHITE,
+        navBarUserMenuLabel: FUGA_COLORS.WHITE,
+        backgroundColor: FUGA_COLORS.GREY[900]
+      },
+      default: {
+        navBarIcon: FUGA_COLORS.WHITE,
+        navBarUserMenuLabel: FUGA_COLORS.WHITE,
+        backgroundColor: FUGA_COLORS.GREY[900]
+      },
+    },
+    tabs: {
+      primary: {
+        backgroundColor: FUGA_COLORS.GREY[900],
+        indicator: FUGA_COLORS.WHITE,
+        contrastText: FUGA_COLORS.WHITE,
+      },
+      secondary: {
+        backgroundColor: FUGA_COLORS.GREY[900],
+        indicator: FUGA_COLORS.WHITE,
+        contrastText: FUGA_COLORS.WHITE,
+      },
+      default: {
+        backgroundColor: FUGA_COLORS.GREY[800],
+        indicator: FUGA_COLORS.WHITE,
+        contrastText: FUGA_COLORS.WHITE,
+      },
+    }
+  } as PaletteOptions
+};
+
+const darkModeTheme = createTheme(darkMode);
 
 export function Layout(props: LayoutProps) {
   const classes = useStyles();
-  const [theme, setTheme] = useState<Theme>((themes.get('default') as Theme));
-  const [themeName, setThemeName] = useState('default');
+  const [theme, setTheme] = useState<Theme>(darkModeTheme);
+  const [themeName, setThemeName] = useState('dark');
+  const [darkModeOn, setDarkModeOn] = useState(true);
+
+  // const preffersDarkmode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  // useEffect(() => {
+  //   if (preffersDarkmode) {
+  //     setTheme(darkModeTheme);
+  //     setThemeName('dark');
+  //   }
+  // }, [preffersDarkmode]);
 
   function handleThemeChange(name: string) {
     if (!themes.has(name)) return;
@@ -90,14 +145,36 @@ export function Layout(props: LayoutProps) {
 
     setThemeName(name);
     setTheme((themes.get(name) as Theme));
+    setDarkModeOn(false);
+  }
+
+  function toggleDarkMode() {
+    if (!darkModeOn) {
+      setTheme(darkModeTheme);
+      setThemeName('dark');
+      setDarkModeOn(true);
+    }
+    else {
+      setTheme(themes.get('default') as Theme);
+      setThemeName('default');
+      setDarkModeOn(false);
+    }
   }
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <WindowSizeContextProvider>
         <TopBar
           leftSideContent={<Image src={logo} alt="logo" className={classes.logo} />}
-          rightSideContent={<ThemeSelect onChange={handleThemeChange} />}
+          rightSideContent={<>
+            <ThemeSelect onChange={handleThemeChange} />
+            <Box mx={1}>
+              <IconButton onClick={toggleDarkMode}>
+                <Brightness6 />
+              </IconButton>
+            </Box>
+          </>}
         >
           <ToothPasteTabs color="primary" links={topMenuLinks} selectedIndex={props.topMenuIndex || 0} />
         </TopBar>

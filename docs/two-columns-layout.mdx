@@ -1,0 +1,89 @@
+---
+title: Two Columns Layout
+slug: two-columns-layout
+description: Two Columns Layout
+tags:
+  [
+    "top bar",
+    "topbar",
+    "top bar component",
+    "topbar component",
+    "top bar styles",
+    "topbar styles",
+    "top bar style",
+    "navigation",
+    "layout",
+  ]
+---
+
+### Component
+
+```javascript
+import React from "react";
+import { useStyles } from "./styles";
+
+interface Props {
+  leftColumn: React.ReactNode;
+  rightColumn: React.ReactNode;
+  flexColumn?: "left" | "right";
+  leftColumnClass?: string;
+  rightColumnClass?: string;
+}
+
+const TwoColumnsRow = ({
+  leftColumn,
+  rightColumn,
+  flexColumn,
+  leftColumnClass = "",
+  rightColumnClass = "",
+}: Props) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.columnsWrapper}>
+      <div
+        className={`${
+          flexColumn === "left" && classes.flexColumn
+        } ${leftColumnClass}`}
+      >
+        {leftColumn}
+      </div>
+      <div
+        className={`${
+          flexColumn === "right" && classes.flexColumn
+        } ${rightColumnClass}`}
+      >
+        {rightColumn}
+      </div>
+    </div>
+  );
+};
+
+export default TwoColumnsRow;
+```
+
+#### Styles
+
+```javascript
+export const useStyles = makeStyles({
+  columnsWrapper: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  flexColumn: {
+    flex: 1,
+  },
+});
+```
+
+#### Usage
+
+```javascript
+<TwoColumnsRow
+  flexColumn="right"
+  leftColumn={<Typography variant="h6">This column has 70% width</Typography>}
+  leftColumnClass={classes.leftColumn}
+  rightColumn={<Typography variant="h6">This column is Flexible</Typography>}
+/>
+```

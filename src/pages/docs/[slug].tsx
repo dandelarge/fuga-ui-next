@@ -9,19 +9,21 @@ import { NextPageWithLayout } from "../_app";
 
 const DOCS_PATH = "./docs";
 
+interface FileMeta {
+  title: string;
+  slug: string;
+  description?: string;
+  tags?: string[];
+}
 interface Props {
-  docs: {
-    title: string;
-    slug: string;
-    description?: string;
-    tags?: string[];
-  }[];
+  docs: FileMeta[];
   pageContent: MDXRemoteSerializeResult;
+  frontmatter: FileMeta;
 }
 
-const Page: NextPageWithLayout<Props> = ({ docs, pageContent }) => {
+const Page: NextPageWithLayout<Props> = ({ docs, pageContent, frontmatter }) => {
   return (
-    <Layout topMenuIndex={0} title={pageContent.frontmatter.title}>
+    <Layout topMenuIndex={0} title={frontmatter.title}>
       <DocsLayout docs={docs}>
         <MDXRemote {...pageContent} />
       </DocsLayout>
@@ -44,11 +46,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const filePath = join(DOCS_PATH, `${slug}.mdx`);
   const pageContent = readFileSync(filePath, "utf8");
   const serialized = await serialize(pageContent, { parseFrontmatter: true });
+  const frontmatter = serialized.frontmatter;
 
   return {
     props: {
       docs: filtered,
       pageContent: serialized,
+      frontmatter
     }
   }
 }

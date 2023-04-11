@@ -24,7 +24,7 @@ interface Props {
 const Page: NextPageWithLayout<Props> = ({ docs, pageContent, frontmatter }) => {
   return (
     <Layout topMenuIndex={0} title={frontmatter.title}>
-      <DocsLayout docs={docs}>
+      <DocsLayout docs={docs} themeMode="dark">
         <MDXRemote {...pageContent} />
       </DocsLayout>
     </Layout>
